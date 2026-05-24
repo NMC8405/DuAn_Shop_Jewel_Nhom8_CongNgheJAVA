@@ -67,10 +67,31 @@ public class CouponService {
 
     public Coupon save(Coupon coupon) {
         coupon.setCode(coupon.getCode().toUpperCase());
+        if (coupon.getId() != null) {
+            Coupon existing = findById(coupon.getId());
+            existing.setCode(coupon.getCode());
+            existing.setDescription(coupon.getDescription());
+            existing.setDiscountType(coupon.getDiscountType());
+            existing.setDiscountValue(coupon.getDiscountValue());
+            existing.setMinOrderAmount(coupon.getMinOrderAmount());
+            existing.setMaxDiscount(coupon.getMaxDiscount());
+            existing.setMaxUses(coupon.getMaxUses());
+            existing.setActive(coupon.isActive());
+            existing.setExpiredAt(coupon.getExpiredAt());
+            return couponRepository.save(existing);
+        }
         return couponRepository.save(coupon);
     }
 
     public void delete(Long id) {
-        couponRepository.deleteById(id);
+        Coupon coupon = findById(id);
+        try {
+            couponRepository.delete(coupon);
+            couponRepository.flush();
+        } catch (Exception e) {
+            // Fallback to soft delete if referenced by orders (via couponCode text checks, though JPA won't know directly, SQL triggers or constraints might block if custom schema constraint exists)
+            coupon.setActive(false);
+            couponRepository.save(coupon);
+        }
     }
 }

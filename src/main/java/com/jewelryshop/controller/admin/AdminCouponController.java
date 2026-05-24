@@ -42,15 +42,23 @@ public class AdminCouponController {
             model.addAttribute("discountTypes", DiscountType.values());
             return "admin/coupons/form";
         }
-        couponService.save(coupon);
-        ra.addFlashAttribute("success", "Lưu mã giảm giá thành công!");
+        try {
+            couponService.save(coupon);
+            ra.addFlashAttribute("success", "Lưu mã giảm giá thành công!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "Lỗi khi lưu mã giảm giá: " + e.getMessage());
+        }
         return "redirect:/admin/coupons";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes ra) {
-        couponService.delete(id);
-        ra.addFlashAttribute("success", "Đã xóa mã giảm giá!");
+        try {
+            couponService.delete(id);
+            ra.addFlashAttribute("success", "Đã xóa mã giảm giá!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "Lỗi khi xóa mã giảm giá: " + e.getMessage());
+        }
         return "redirect:/admin/coupons";
     }
 }

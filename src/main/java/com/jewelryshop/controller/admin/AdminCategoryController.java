@@ -37,15 +37,23 @@ public class AdminCategoryController {
         if (result.hasErrors()) {
             return "admin/categories/form";
         }
-        categoryService.save(category);
-        ra.addFlashAttribute("success", "Lưu danh mục thành công!");
+        try {
+            categoryService.save(category);
+            ra.addFlashAttribute("success", "Lưu danh mục thành công!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "Lỗi khi lưu danh mục: " + e.getMessage());
+        }
         return "redirect:/admin/categories";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes ra) {
-        categoryService.delete(id);
-        ra.addFlashAttribute("success", "Đã xóa danh mục!");
+        try {
+            categoryService.delete(id);
+            ra.addFlashAttribute("success", "Đã xóa danh mục!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "Lỗi khi xóa danh mục: " + e.getMessage());
+        }
         return "redirect:/admin/categories";
     }
 }

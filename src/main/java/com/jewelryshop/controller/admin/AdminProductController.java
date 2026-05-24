@@ -74,8 +74,12 @@ public class AdminProductController {
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes ra) {
-        productService.delete(id);
-        ra.addFlashAttribute("success", "Đã xóa sản phẩm!");
+        try {
+            productService.delete(id);
+            ra.addFlashAttribute("success", "Đã xóa sản phẩm!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "Lỗi khi xóa sản phẩm: " + e.getMessage());
+        }
         return "redirect:/admin/products";
     }
 

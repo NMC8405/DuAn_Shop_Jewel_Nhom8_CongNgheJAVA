@@ -53,16 +53,32 @@ public class ProductService {
 
     public Product save(Product product, MultipartFile mainImageFile, List<MultipartFile> extraImages)
             throws Exception {
-        // Xu ly anh chinh
-        if (mainImageFile != null && !mainImageFile.isEmpty()) {
-            if (product.getMainImage() != null) {
-                fileStorageService.deleteFile(product.getMainImage());
-            }
-            String path = fileStorageService.saveFile(mainImageFile);
-            product.setMainImage(path);
+        Product toSave;
+        if (product.getId() != null) {
+            toSave = findById(product.getId());
+            toSave.setName(product.getName());
+            toSave.setDescription(product.getDescription());
+            toSave.setPrice(product.getPrice());
+            toSave.setSalePrice(product.getSalePrice());
+            toSave.setStockQuantity(product.getStockQuantity());
+            toSave.setBrand(product.getBrand());
+            toSave.setMaterial(product.getMaterial());
+            toSave.setActive(product.isActive());
+            toSave.setCategory(product.getCategory());
+        } else {
+            toSave = product;
         }
 
-        Product saved = productRepository.save(product);
+        // Xu ly anh chinh
+        if (mainImageFile != null && !mainImageFile.isEmpty()) {
+            if (toSave.getMainImage() != null) {
+                fileStorageService.deleteFile(toSave.getMainImage());
+            }
+            String path = fileStorageService.saveFile(mainImageFile);
+            toSave.setMainImage(path);
+        }
+
+        Product saved = productRepository.save(toSave);
 
         // Xu ly anh phu
         if (extraImages != null) {
@@ -84,8 +100,14 @@ public class ProductService {
 
     public void delete(Long id) {
         Product product = findById(id);
-        product.setActive(false); // Soft delete
-        productRepository.save(product);
+        try {
+            productRepository.delete(product);
+            productRepository.flush();
+        } catch (Exception e) {
+            // Fallback to soft delete if referenced by orders
+            product.setActive(false);
+            productRepository.save(product);
+        }
     }
 
     public void deleteImage(Long imageId) {

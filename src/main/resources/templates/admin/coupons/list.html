@@ -18,6 +18,9 @@
     <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
       <i class="fas fa-check-circle me-2"></i><span th:text="${success}"></span><button class="btn-close" data-bs-dismiss="alert"></button>
     </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+      <i class="fas fa-exclamation-circle me-2"></i><span th:text="${error}"></span><button class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
     <div class="admin-card">
       <table class="table table-hover admin-table align-middle">
         <thead><tr><th>Mã</th><th>Loại</th><th>Giá Trị</th><th>Đơn Tối Thiểu</th><th>Đã Dùng / Tổng</th><th>Hết Hạn</th><th>Trạng Thái</th><th class="text-center">Thao Tác</th></tr></thead>

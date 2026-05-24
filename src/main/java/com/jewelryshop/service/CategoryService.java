@@ -31,12 +31,25 @@ public class CategoryService {
     }
 
     public Category save(Category category) {
+        if (category.getId() != null) {
+            Category existing = findById(category.getId());
+            existing.setName(category.getName());
+            existing.setDescription(category.getDescription());
+            existing.setActive(category.isActive());
+            return categoryRepository.save(existing);
+        }
         return categoryRepository.save(category);
     }
 
     public void delete(Long id) {
         Category cat = findById(id);
-        cat.setActive(false);
-        categoryRepository.save(cat);
+        try {
+            categoryRepository.delete(cat);
+            categoryRepository.flush();
+        } catch (Exception e) {
+            // Fallback to soft delete if it has products referencing it
+            cat.setActive(false);
+            categoryRepository.save(cat);
+        }
     }
 }

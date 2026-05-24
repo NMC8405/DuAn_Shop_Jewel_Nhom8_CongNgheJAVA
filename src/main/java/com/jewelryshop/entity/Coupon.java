@@ -51,6 +51,7 @@ public class Coupon {
     private boolean active = true;
 
     @Column(name = "expired_at")
+    @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime expiredAt;
 
     @Column(name = "created_at")
