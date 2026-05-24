@@ -102,21 +102,32 @@
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const usernameInput = document.querySelector('input[name="username"]');
+    const passwordInput = document.getElementById('password');
     const rememberMeCheck = document.getElementById('rememberMe');
 
-    // Load saved username
+    // Load saved credentials
     const savedUsername = localStorage.getItem('luxejewel_remembered_username');
+    const savedPasswordBase64 = localStorage.getItem('luxejewel_remembered_password');
     if (savedUsername) {
       usernameInput.value = savedUsername;
       rememberMeCheck.checked = true;
+      if (savedPasswordBase64) {
+        try {
+          passwordInput.value = atob(savedPasswordBase64);
+        } catch (e) {
+          console.error('Error decoding password');
+        }
+      }
     }
 
-    // Save username on submit
+    // Save credentials on submit
     form.addEventListener('submit', function() {
       if (rememberMeCheck.checked) {
         localStorage.setItem('luxejewel_remembered_username', usernameInput.value.trim());
+        localStorage.setItem('luxejewel_remembered_password', btoa(passwordInput.value));
       } else {
         localStorage.removeItem('luxejewel_remembered_username');
+        localStorage.removeItem('luxejewel_remembered_password');
       }
     });
   });
