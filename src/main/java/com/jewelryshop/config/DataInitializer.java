@@ -17,6 +17,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Autowired private UserRepository userRepository;
     @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private com.jewelryshop.repository.ProductRepository productRepository;
 
     @Override
     public void run(String... args) {
@@ -65,5 +66,33 @@ public class DataInitializer implements CommandLineRunner {
             userRepository.save(user2);
             System.out.println("✅ Đã tạo tài khoản User: user2 / user123");
         }
+
+        // Cap nhat anh san pham mau neu chua co
+        updateProductImages();
+    }
+
+    private void updateProductImages() {
+        java.util.Map<String, String> imageMap = new java.util.HashMap<>();
+        imageMap.put("Nhẫn Kim Cương Vàng 18K", "/images/products/ring_diamond_18k.jpg");
+        imageMap.put("Nhẫn Vàng Hoa Hồng", "/images/products/ring_rose_gold.jpg");
+        imageMap.put("Nhẫn Đôi Bạc 925", "/images/products/ring_silver_couple.jpg");
+        imageMap.put("Dây Chuyền Bạch Kim Ngọc Trai", "/images/products/necklace_platinum_pearl.jpg");
+        imageMap.put("Dây Chuyền Vàng Bông Sen", "/images/products/necklace_gold_lotus.jpg");
+        imageMap.put("Dây Chuyền Đá Ruby", "/images/products/necklace_ruby.jpg");
+        imageMap.put("Bông Tai Kim Cương Giọt Nước", "/images/products/earring_diamond_teardrop.jpg");
+        imageMap.put("Bông Tai Ngọc Lục Bảo", "/images/products/earring_emerald.jpg");
+        imageMap.put("Bông Tai Ngọc Trai Nhỏ", "/images/products/earring_pearl_small.jpg");
+        imageMap.put("Vòng Tay Vàng Charm", "/images/products/bracelet_gold_charm.jpg");
+        imageMap.put("Vòng Tay Bạc Đính Đá CZ", "/images/products/bracelet_silver_cz.jpg");
+        imageMap.put("Lắc Chân Vàng Bướm", "/images/products/anklet_gold_butterfly.jpg");
+
+        productRepository.findAll().forEach(product -> {
+            String expectedImage = imageMap.get(product.getName());
+            if (expectedImage != null && (product.getMainImage() == null || !product.getMainImage().equals(expectedImage))) {
+                product.setMainImage(expectedImage);
+                productRepository.save(product);
+                System.out.println("✅ Đã cập nhật ảnh cho sản phẩm: " + product.getName() + " -> " + expectedImage);
+            }
+        });
     }
 }

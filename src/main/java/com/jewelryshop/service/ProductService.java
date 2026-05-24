@@ -31,8 +31,8 @@ public class ProductService {
             default            -> Sort.by("createdAt").descending();
         };
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        String kw = (keyword != null && !keyword.isBlank()) ? keyword.trim() : null;
-        String br = (brand   != null && !brand.isBlank())   ? brand.trim()   : null;
+        String kw = (keyword != null && !keyword.isBlank()) ? "%" + keyword.trim().toLowerCase() + "%" : null;
+        String br = (brand   != null && !brand.isBlank())   ? "%" + brand.trim().toLowerCase() + "%"   : null;
         return productRepository.findWithFilters(kw, categoryId, minPrice, maxPrice, br, pageable);
     }
 
