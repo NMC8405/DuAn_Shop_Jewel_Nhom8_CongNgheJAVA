@@ -37,3 +37,5 @@ uploads/
 *.log
 # *.sql (Cho phép push file jewelry_shop.sql lên git)
 .env
+file_bao_cao/*.mp4
+
