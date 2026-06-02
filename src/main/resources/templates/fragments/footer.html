@@ -200,12 +200,18 @@
         headers: headers,
         body: JSON.stringify({ message: userMessage })
       })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('HTTP error ' + res.status);
+        }
+        return res.json();
+      })
       .then(data => {
         if (indicator) indicator.remove();
         // Dynamic simulated natural human typing delay (750ms) for high quality look
         setTimeout(() => {
-          appendBotMessage(data.reply);
+          const reply = data && data.reply ? data.reply : "Dạ, LuxeJewel Advisor gặp khó khăn khi xử lý câu hỏi này. Quý khách vui lòng thử lại câu hỏi khác nhé!";
+          appendBotMessage(reply);
         }, 750);
       })
       .catch(err => {
