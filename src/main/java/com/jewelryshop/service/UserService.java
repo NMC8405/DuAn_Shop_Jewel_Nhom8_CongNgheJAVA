@@ -94,6 +94,7 @@ public class UserService {
                 throw new RuntimeException("Email đã được sử dụng!");
             }
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userRepository.save(user);
         } else {
             User existing = findById(user.getId());
             if (!existing.getUsername().equals(user.getUsername()) && userRepository.existsByUsername(user.getUsername())) {
@@ -103,12 +104,20 @@ public class UserService {
                 throw new RuntimeException("Email đã được sử dụng!");
             }
             if (user.getPassword() != null && !user.getPassword().isBlank()) {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-            } else {
-                user.setPassword(existing.getPassword());
+                existing.setPassword(passwordEncoder.encode(user.getPassword()));
             }
+            existing.setUsername(user.getUsername());
+            existing.setEmail(user.getEmail());
+            existing.setFullName(user.getFullName());
+            existing.setPhone(user.getPhone());
+            existing.setAddress(user.getAddress());
+            existing.setRole(user.getRole());
+            existing.setActive(user.isActive());
+            if (existing.getCreatedAt() == null) {
+                existing.setCreatedAt(java.time.LocalDateTime.now());
+            }
+            return userRepository.save(existing);
         }
-        return userRepository.save(user);
     }
 
     public void delete(Long id) {

@@ -57,7 +57,7 @@ public class Product {
     @Builder.Default
     private int viewCount = 0;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")

@@ -81,7 +81,7 @@ public class ChatApiController {
                 "   - Vận chuyển: Miễn phí cho đơn hàng từ 2.000.000đ trở lên. Dưới 2 triệu phí ship đồng giá 30k.\n" +
                 "   - Đổi trả: Hỗ trợ đổi trả miễn phí trong vòng 30 ngày.\n" +
                 "   - Bảo hành: Miễn phí đánh bóng, làm sạch trang sức trọn đời.\n" +
-                "   - Mã giảm giá: LUXE10 (giảm 10% cho Nhẫn & Dây chuyền), GIAM500K (giảm 500k cho đơn từ 10 triệu).\n" +
+                "   - Mã giảm giá: WELCOME10 (giảm 10% cho đơn đầu tiên), SAVE500K (giảm 500k cho đơn từ 5 triệu).\n" +
                 "4. Dựa vào ngữ cảnh sản phẩm thật sau để giới thiệu chính xác mẫu có tại shop khi khách hỏi mua, kèm mức giá chính xác:\n" +
                 catalogContext.toString() + "\n" +
                 "Khi giới thiệu sản phẩm thật, hãy khuyên khách bấm nút 'Xem Chi Tiết' trên trang hoặc truy cập liên kết dạng /shop/ID để xem trực tiếp.";
@@ -244,8 +244,8 @@ public class ChatApiController {
         // H. Coupons and promotions
         else if (containsAny(lowerMsg, "khuyến mãi", "khuyen mai", "giảm giá", "giam gia", "coupon", "voucher", "ưu đãi")) {
             reply = "🏷️ **Ưu đãi hấp dẫn đang kích hoạt tại LuxeJewel:**<br><br>" +
-                    "• **Mã `LUXE10`**: Giảm ngay 10% giá trị sản phẩm Nhẫn & Vòng cổ mới.<br>" +
-                    "• **Mã `GIAM500K`**: Chiết khấu trực tiếp 500,000đ cho hóa đơn vàng/kim cương từ 10 triệu đồng trở lên.<br>" +
+                    "• **Mã `WELCOME10`**: Giảm ngay 10% giá trị sản phẩm Nhẫn & Vòng cổ mới.<br>" +
+                    "• **Mã `SAVE500K`**: Chiết khấu trực tiếp 500,000đ cho hóa đơn vàng/kim cương từ 10 triệu đồng trở lên.<br>" +
                     "• **Vận chuyển**: Miễn phí vận chuyển hỏa tốc toàn quốc cho tất cả các đơn từ 2.000.000đ.<br><br>" +
                     "Quý khách đừng quên áp dụng mã ưu đãi ở bước thanh toán nhé!";
         }
